@@ -1,0 +1,36 @@
+# Laravel Backend ignores
+/BackEnd/vendor/
+/BackEnd/node_modules/
+/BackEnd/.env
+/BackEnd/storage/framework/cache/**
+/BackEnd/storage/framework/views/**
+/BackEnd/storage/framework/sessions/**
+/BackEnd/public/storage
+/BackEnd/.phpunit.result.cache
+
+# React Frontend ignores
+/frontend/node_modules/
+/frontend/.env
+/frontend/build/
+/frontend/.DS_Store
+/frontend/.eslintcache
+/frontend/coverage/
+
+# System files
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.sublime-*
+
+# Debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
