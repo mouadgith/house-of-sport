@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './views/Sidebar';
 import MembersPage from './views/Members';
 import ProfilePage from './views/Profile';
+import CoachesPage from './views/Coaches';
 import './App.css';
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
           <Routes>
             <Route path="/" element={<div>Home Page</div>} />
             <Route path="/members" element={<MembersPage />} />
-            <Route path="/feedback" element={<div>Feedback Page</div>} />
+            <Route path="/coaches" element={<CoachesPage />} />
             <Route path="/reporting" element={<div>Reporting Page</div>} />
             <Route path="/equipment" element={<div>Equipment Page</div>} />
             <Route path="/support" element={<div>Support Page</div>} />

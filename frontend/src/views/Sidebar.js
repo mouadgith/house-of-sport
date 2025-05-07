@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faHome, 
   faUsers, 
-  faCommentDots, 
+  faVest, 
   faChartBar, 
   faDumbbell, 
   faLifeRing, 
@@ -21,7 +21,7 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Home', icon: faHome, path: '/' },
     { name: 'Members', icon: faUsers, path: '/members' },
-    { name: 'Feedback', icon: faCommentDots, path: '/feedback' },
+    { name: 'Coaches', icon: faVest, path: '/coaches' },
     { name: 'Reporting', icon: faChartBar, path: '/reporting' },
     { name: 'Equipment', icon: faDumbbell, path: '/equipment' },
     { name: 'Support', icon: faLifeRing, path: '/support' },

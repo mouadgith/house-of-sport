@@ -13,21 +13,19 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import Member from '../models/Member';
+import Coach from '../models/Coach';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 // Sample data - replace with your actual data source
 const fakeData = [
   {
     id: '1',
-    nom: 'John',
-    prenom: 'Doe',
-    email: 'john@example.com',
-    numTel: '+212345678902',
-    adresse: '123 Main St',
-    poids: '75',
-    conditionMedicale: 'None',
+    nom: 'Ali',
+    prenom: 'Bennani',
+    tel: '+212612345678',
+    adresse: '456 Rue Sport, Casablanca',
     sexe: 'M',
-    dateNaissance: '1990-01-01',
+    dateNaissance: '1985-05-10',
   },
   // Add more sample data as needed
 ];
@@ -63,51 +61,51 @@ const theme = {
   },
 };
 
-const Members = () => {
+const Coaches = () => {
   const [validationErrors, setValidationErrors] = useState({});
 
   // CREATE hook
-  const { mutateAsync: createMember, isLoading: isCreatingMember } = useCreateMember();
+  const { mutateAsync: createCoach, isLoading: isCreatingCoach } = useCreateCoach();
   // READ hook
   const {
-    data: fetchedMembers = [],
-    isError: isLoadingMembersError,
-    isFetching: isFetchingMembers,
-    isLoading: isLoadingMembers,
-  } = useGetMembers();
+    data: fetchedCoaches = [],
+    isError: isLoadingCoachesError,
+    isFetching: isFetchingCoaches,
+    isLoading: isLoadingCoaches,
+  } = useGetCoaches();
   // UPDATE hook
-  const { mutateAsync: updateMember, isLoading: isUpdatingMember } = useUpdateMembers();
+  const { mutateAsync: updateCoach, isLoading: isUpdatingCoach } = useUpdateCoach();
   // DELETE hook
-  const { mutateAsync: deleteMember, isLoading: isDeletingMember } = useDeleteMember();
+  const { mutateAsync: deleteCoach, isLoading: isDeletingCoach } = useDeleteCoach();
 
   // CREATE action
-  const handleCreateMember = async ({ values, exitCreatingMode }) => {
-    const newValidationErrors = validateMember(values);
+  const handleCreateCoach = async ({ values, exitCreatingMode }) => {
+    const newValidationErrors = validateCoach(values);
     if (Object.values(newValidationErrors).some((error) => !!error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    await createMember(values);
+    await createCoach(values);
     exitCreatingMode();
   };
 
   // UPDATE action
-  const handleSaveMember = async ({ values, table }) => {
-    const newValidationErrors = validateMember(values);
+  const handleSaveCoach = async ({ values, table }) => {
+    const newValidationErrors = validateCoach(values);
     if (Object.values(newValidationErrors).some((error) => !!error)) {
       setValidationErrors(newValidationErrors);
       return;
     }
     setValidationErrors({});
-    await updateMember(values);
+    await updateCoach(values);
     table.setEditingRow(null);
   };
 
   // DELETE action
   const openDeleteConfirmModal = (row) =>
     modals.openConfirmModal({
-      title: 'Êtes-vous sûr de vouloir supprimer ce membre?',
+      title: 'Êtes-vous sûr de vouloir supprimer ce coach?',
       children: (
         <Text>
           Êtes-vous sûr de vouloir supprimer {row.original.nom} {row.original.prenom}? Cette action ne peut pas être annulée.
@@ -115,7 +113,7 @@ const Members = () => {
       ),
       labels: { confirm: 'Supprimer', cancel: 'Annuler' },
       confirmProps: { color: 'red' },
-      onConfirm: () => deleteMember(row.original.id),
+      onConfirm: () => deleteCoach(row.original.id),
     });
 
   const columns = useMemo(
@@ -145,24 +143,14 @@ const Members = () => {
         },
       },
       {
-        accessorKey: 'email',
-        header: 'Email',
-        mantineEditTextInputProps: {
-          type: 'email',
-          required: true,
-          error: validationErrors?.email,
-          onFocus: () => setValidationErrors({ ...validationErrors, email: undefined }),
-        },
-      },
-      {
-        accessorKey: 'numTel',
-        header: 'Numéro de téléphone',
+        accessorKey: 'tel',
+        header: 'Téléphone',
         mantineEditTextInputProps: {
           type: 'tel',
           required: true,
-          error: validationErrors?.numTel,
+          error: validationErrors?.tel,
           placeholder: '+212XXXXXXXXX',
-          onFocus: () => setValidationErrors({ ...validationErrors, numTel: undefined }),
+          onFocus: () => setValidationErrors({ ...validationErrors, tel: undefined }),
         },
       },
       {
@@ -171,23 +159,6 @@ const Members = () => {
         mantineEditTextInputProps: {
           error: validationErrors?.adresse,
           onFocus: () => setValidationErrors({ ...validationErrors, adresse: undefined }),
-        },
-      },
-      {
-        accessorKey: 'poids',
-        header: 'Poids',
-        mantineEditTextInputProps: {
-          type: 'number',
-          error: validationErrors?.poids,
-          onFocus: () => setValidationErrors({ ...validationErrors, poids: undefined }),
-        },
-      },
-      {
-        accessorKey: 'conditionMedicale',
-        header: 'Condition médicale',
-        mantineEditTextInputProps: {
-          error: validationErrors?.conditionMedicale,
-          onFocus: () => setValidationErrors({ ...validationErrors, conditionMedicale: undefined }),
         },
       },
       {
@@ -218,12 +189,12 @@ const Members = () => {
 
   const table = useMantineReactTable({
     columns,
-    data: fetchedMembers,
+    data: fetchedCoaches,
     createDisplayMode: 'row',
     editDisplayMode: 'row',
     enableEditing: true,
     getRowId: (row) => row.id,
-    mantineToolbarAlertBannerProps: isLoadingMembersError
+    mantineToolbarAlertBannerProps: isLoadingCoachesError
       ? {
           color: 'orange',
           children: 'Erreur lors du chargement des données',
@@ -235,9 +206,9 @@ const Members = () => {
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
-    onCreatingRowSave: handleCreateMember,
+    onCreatingRowSave: handleCreateCoach,
     onEditingRowCancel: () => setValidationErrors({}),
-    onEditingRowSave: handleSaveMember,
+    onEditingRowSave: handleSaveCoach,
     renderRowActions: ({ row, table }) => (
       <Flex gap="md">
         <Tooltip label="Modifier">
@@ -259,14 +230,14 @@ const Members = () => {
           table.setCreatingRow(true);
         }}
       >
-        Ajouter un membre
+        Ajouter un coach
       </Button>
     ),
     state: {
-      isLoading: isLoadingMembers,
-      isSaving: isCreatingMember || isUpdatingMember || isDeletingMember,
-      showAlertBanner: isLoadingMembersError,
-      showProgressBars: isFetchingMembers,
+      isLoading: isLoadingCoaches,
+      isSaving: isCreatingCoach || isUpdatingCoach || isDeletingCoach,
+      showAlertBanner: isLoadingCoachesError,
+      showProgressBars: isFetchingCoaches,
     },
   });
 
@@ -276,14 +247,6 @@ const Members = () => {
 // Validation functions
 const validateRequired = (value) => !!value?.length;
 
-const validateEmail = (email) =>
-  !!email.length &&
-  email
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    );
-
 const validatePhoneNumber = (phone) => {
   if (!phone) return false;
   // Format: +212 suivi de 9 chiffres
@@ -291,55 +254,45 @@ const validatePhoneNumber = (phone) => {
   return phoneRegex.test(phone);
 };
 
-function validateMember(member) {
+function validateCoach(coach) {
   const errors = {};
-  
-  if (!validateRequired(member.nom)) {
+  if (!validateRequired(coach.nom)) {
     errors.nom = 'Le nom est requis';
   }
-  
-  if (!validateRequired(member.prenom)) {
+  if (!validateRequired(coach.prenom)) {
     errors.prenom = 'Le prénom est requis';
   }
-  
-  if (!validateEmail(member.email)) {
-    errors.email = 'Format d\'email incorrect';
+  if (!validatePhoneNumber(coach.tel)) {
+    errors.tel = 'Le numéro doit commencer par +212 suivi de 9 chiffres';
   }
-  
-  if (!validatePhoneNumber(member.numTel)) {
-    errors.numTel = 'Le numéro doit commencer par +212 suivi de 9 chiffres';
-  }
-  
   return errors;
 }
 
 // CREATE hook
-function useCreateMember() {
+function useCreateCoach() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (member) => {
-      // Implement your API call here
+    mutationFn: async (coach) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return Promise.resolve();
     },
-    onMutate: (newMemberInfo) => {
-      queryClient.setQueryData(['members'], (oldData = []) => {
-        const newMember = {
-          ...newMemberInfo,
+    onMutate: (newCoachInfo) => {
+      queryClient.setQueryData(['coaches'], (oldData = []) => {
+        const newCoach = {
+          ...newCoachInfo,
           id: (Math.random() + 1).toString(36).substring(7),
         };
-        return [...oldData, newMember];
+        return [...oldData, newCoach];
       });
     },
   });
 }
 
 // READ hook
-function useGetMembers() {
+function useGetCoaches() {
   return useQuery({
-    queryKey: ['members'],
+    queryKey: ['coaches'],
     queryFn: async () => {
-      // Implement your API call here
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return Promise.resolve(fakeData);
     },
@@ -348,18 +301,17 @@ function useGetMembers() {
 }
 
 // UPDATE hook
-function useUpdateMembers() {
+function useUpdateCoach() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (updatedMember) => {
-      // Implement your API call here
+    mutationFn: async (updatedCoach) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return Promise.resolve();
     },
-    onMutate: (updatedMember) => {
-      queryClient.setQueryData(['members'], (oldData = []) => {
-        return oldData.map((member) =>
-          member.id === updatedMember.id ? updatedMember : member
+    onMutate: (updatedCoach) => {
+      queryClient.setQueryData(['coaches'], (oldData = []) => {
+        return oldData.map((coach) =>
+          coach.id === updatedCoach.id ? updatedCoach : coach
         );
       });
     },
@@ -367,17 +319,16 @@ function useUpdateMembers() {
 }
 
 // DELETE hook
-function useDeleteMember() {
+function useDeleteCoach() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (memberId) => {
-      // Implement your API call here
+    mutationFn: async (coachId) => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return Promise.resolve();
     },
-    onMutate: (memberId) => {
-      queryClient.setQueryData(['members'], (oldData = []) => {
-        return oldData.filter((member) => member.id !== memberId);
+    onMutate: (coachId) => {
+      queryClient.setQueryData(['coaches'], (oldData = []) => {
+        return oldData.filter((coach) => coach.id !== coachId);
       });
     },
   });
@@ -385,19 +336,19 @@ function useDeleteMember() {
 
 const queryClient = new QueryClient();
 
-const MembersPage = () => (
+const CoachesPage = () => (
   <>
     <div className="container-fluid mb-4">
-      <h1>La liste des membres</h1>
+      <h1>La liste des coachs</h1>
     </div>
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme}>
         <ModalsProvider>
-          <Members />
+          <Coaches />
         </ModalsProvider>
       </MantineProvider>
     </QueryClientProvider>
   </>
 );
 
-export default MembersPage;
+export default CoachesPage;
