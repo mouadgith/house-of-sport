@@ -3,6 +3,7 @@ import Sidebar from './views/Sidebar';
 import MembersPage from './views/Members';
 import ProfilePage from './views/Profile';
 import CoachesPage from './views/Coaches';
+import EquipmentPage from './views/Equipment';
 import './App.css';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
             <Route path="/members" element={<MembersPage />} />
             <Route path="/coaches" element={<CoachesPage />} />
             <Route path="/reporting" element={<div>Reporting Page</div>} />
-            <Route path="/equipment" element={<div>Equipment Page</div>} />
+            <Route path="/equipment" element={<EquipmentPage />} />
             <Route path="/support" element={<div>Support Page</div>} />
             <Route path="/settings" element={<div>Settings Page</div>} />
             <Route path="/profile" element={<ProfilePage />} />
