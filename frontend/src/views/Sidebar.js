@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faHome, 
@@ -14,22 +15,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Sidebar.css';
 
 const Sidebar = () => {
-  const [activeItem, setActiveItem] = useState('Home');
+  const location = useLocation();
   const [showNewFeatures, setShowNewFeatures] = useState(true);
 
   const menuItems = [
-    { name: 'Home', icon: faHome },
-    { name: 'Members', icon: faUsers },
-    { name: 'Feedback', icon: faCommentDots },
-    { name: 'Reporting', icon: faChartBar },
-    { name: 'Equipment', icon: faDumbbell },
-    { name: 'Support', icon: faLifeRing },
-    { name: 'Settings', icon: faCog }
+    { name: 'Home', icon: faHome, path: '/' },
+    { name: 'Members', icon: faUsers, path: '/members' },
+    { name: 'Feedback', icon: faCommentDots, path: '/feedback' },
+    { name: 'Reporting', icon: faChartBar, path: '/reporting' },
+    { name: 'Equipment', icon: faDumbbell, path: '/equipment' },
+    { name: 'Support', icon: faLifeRing, path: '/support' },
+    { name: 'Settings', icon: faCog, path: '/settings' }
   ];
-
-  const handleItemClick = (itemName) => {
-    setActiveItem(itemName);
-  };
 
   return (
     <div className="sidebar">
@@ -40,14 +37,15 @@ const Sidebar = () => {
       <nav className="sidebar-nav">
         <ul>
           {menuItems.map((item) => (
-            <li 
-              key={item.name}
-              className={activeItem === item.name ? 'active' : ''}
-              onClick={() => handleItemClick(item.name)}
-            >
-              <FontAwesomeIcon icon={item.icon} className="icon" />
-              <span className="name">{item.name}</span>
-            </li>
+            <Link to={item.path} className="nav-link">
+              <li 
+                key={item.name}
+                className={location.pathname === item.path ? 'active' : ''}
+              >
+                  <FontAwesomeIcon icon={item.icon} className="icon" />
+                  <span className="name">{item.name}</span>
+              </li>
+            </Link>
           ))}
         </ul>
       </nav>
