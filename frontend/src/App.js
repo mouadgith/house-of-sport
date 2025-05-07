@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './views/Sidebar';
 import MembersPage from './views/Members';
+import ProfilePage from './views/Profile';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/equipment" element={<div>Equipment Page</div>} />
             <Route path="/support" element={<div>Support Page</div>} />
             <Route path="/settings" element={<div>Settings Page</div>} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </div>
       </div>

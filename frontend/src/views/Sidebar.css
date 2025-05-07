@@ -76,6 +76,8 @@
     padding: 10px;
     background-color: #e2e2e2;
     border-radius: 8px;
+    text-decoration: none;
+    color: var(--primary-HS);
   }
   
   .avatar {

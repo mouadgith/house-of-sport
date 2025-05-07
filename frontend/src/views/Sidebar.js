@@ -50,12 +50,12 @@ const Sidebar = () => {
         </ul>
       </nav>
       <div className="align-items-center d-flex justify-content-between mt-auto">
-        <div className="user-profile">
+        <Link to="/profile" className="user-profile">
           <div className="avatar">MP</div>
           <div className="user-info">
             <div className="name">Marta Pintaric</div>
           </div>
-        </div>
+        </Link>
        <div className="logout">
         <button className='btn-none'>
         <FontAwesomeIcon icon={faRightFromBracket} className="rotate-180"/>
