@@ -9,6 +9,7 @@ import {
   faDumbbell, 
   faLifeRing, 
   faCog,
+  faCreditCard,
   faRightFromBracket
 } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -22,7 +23,7 @@ const Sidebar = () => {
     { name: 'Home', icon: faHome, path: '/' },
     { name: 'Members', icon: faUsers, path: '/members' },
     { name: 'Coaches', icon: faVest, path: '/coaches' },
-    { name: 'Reporting', icon: faChartBar, path: '/reporting' },
+    { name: 'Paiement', icon: faCreditCard, path: '/payment' },
     { name: 'Equipment', icon: faDumbbell, path: '/equipment' },
     { name: 'Support', icon: faLifeRing, path: '/support' },
     { name: 'Settings', icon: faCog, path: '/settings' }

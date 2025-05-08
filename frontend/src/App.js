@@ -4,6 +4,7 @@ import MembersPage from './views/Members';
 import ProfilePage from './views/Profile';
 import CoachesPage from './views/Coaches';
 import EquipmentPage from './views/Equipment';
+import PaymentPage from './views/Paiement';
 import './App.css';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
             <Route path="/" element={<div>Home Page</div>} />
             <Route path="/members" element={<MembersPage />} />
             <Route path="/coaches" element={<CoachesPage />} />
-            <Route path="/reporting" element={<div>Reporting Page</div>} />
+            <Route path="/payment" element={<PaymentPage />} />
             <Route path="/equipment" element={<EquipmentPage />} />
             <Route path="/support" element={<div>Support Page</div>} />
             <Route path="/settings" element={<div>Settings Page</div>} />
