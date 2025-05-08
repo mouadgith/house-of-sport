@@ -1,31 +1,51 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './views/Sidebar';
-import MembersPage from './views/Members';
-import ProfilePage from './views/Profile';
-import CoachesPage from './views/Coaches';
-import EquipmentPage from './views/Equipment';
-import PaymentPage from './views/Paiement';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import './App.css';
+import PrivateRoute from './views/PrivateRoute';
+import PageLoader from './components/Loader';
+import { lazyWithDelay } from './utils/lazyWithDelay';
+
+const MembersPage = lazyWithDelay(() => import('./views/Members'));
+const ProfilePage = lazyWithDelay(() => import('./views/Profile'));
+const CoachesPage = lazyWithDelay(() => import('./views/Coaches'));
+const CoachesGroups = lazyWithDelay(() => import('./views/CoachesGroups'));
+const EquipmentPage = lazyWithDelay(() => import('./views/Equipment'));
+const PaymentPage = lazyWithDelay(() => import('./views/Paiement'));
+const Login = lazyWithDelay(() => import('./views/Login'));
+
+function AppLayout() {
+  const { isAuthenticated } = useAuth();
+  return (
+    <div className="app-container">
+      {isAuthenticated && <Sidebar />}
+      <div className="main-content">
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<PrivateRoute><div>Home Page</div></PrivateRoute>} />
+            <Route path="/members" element={<PrivateRoute><MembersPage /></PrivateRoute>} />
+            <Route path="/coaches" element={<PrivateRoute><CoachesPage /></PrivateRoute>} />
+            <Route path="/coaches-groups" element={<PrivateRoute><CoachesGroups /></PrivateRoute>} />
+            <Route path="/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
+            <Route path="/equipment" element={<PrivateRoute><EquipmentPage /></PrivateRoute>} />
+            <Route path="/settings" element={<PrivateRoute><div>Settings Page</div></PrivateRoute>} />
+            <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+          </Routes>
+        </Suspense>
+      </div>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <Router>
-      <div className="app-container">
-        <Sidebar />
-        <div className="main-content">
-          <Routes>
-            <Route path="/" element={<div>Home Page</div>} />
-            <Route path="/members" element={<MembersPage />} />
-            <Route path="/coaches" element={<CoachesPage />} />
-            <Route path="/payment" element={<PaymentPage />} />
-            <Route path="/equipment" element={<EquipmentPage />} />
-            <Route path="/support" element={<div>Support Page</div>} />
-            <Route path="/settings" element={<div>Settings Page</div>} />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Routes>
-        </div>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppLayout />
+      </Router>
+    </AuthProvider>
   );
 }
 

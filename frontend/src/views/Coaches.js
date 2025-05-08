@@ -15,6 +15,7 @@ import {
 } from '@tanstack/react-query';
 import Coach from '../models/Coach';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Navigate } from 'react-router-dom';
 
 // Sample data - replace with your actual data source
 const fakeData = [
@@ -336,10 +337,11 @@ function useDeleteCoach() {
 
 const queryClient = new QueryClient();
 
-const CoachesPage = () => (
-  <>
-    <div className="container-fluid mb-4">
-      <h1>La liste des coachs</h1>
+export default function CoachesPage() {
+  return (
+    <>
+      <div className="container-fluid mb-4">
+        <h1>La liste des coachs</h1>
     </div>
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme}>
@@ -350,5 +352,4 @@ const CoachesPage = () => (
     </QueryClientProvider>
   </>
 );
-
-export default CoachesPage;
+}

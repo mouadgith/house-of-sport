@@ -12,6 +12,7 @@ import {
   NumberInput,
   Select,
   TextInput,
+  Checkbox,
 } from '@mantine/core';
 import { IconCheck, IconBan, IconX, IconCash, IconEdit, IconSearch } from '@tabler/icons-react';
 
@@ -83,6 +84,7 @@ export default function PaiementPage() {
   const [editSubscription, setEditSubscription] = useState('Mois');
   const [search, setSearch] = useState('');
   const [filterSubscription, setFilterSubscription] = useState('');
+  const [showUnpaidOnly, setShowUnpaidOnly] = useState(false);
 
   // Actions
   const approvePayment = (id) => {
@@ -131,7 +133,8 @@ export default function PaiementPage() {
       member.phone.toLowerCase().includes(search.toLowerCase());
     const matchesSubscription =
       !filterSubscription || member.subscription === filterSubscription;
-    return matchesSearch && matchesSubscription;
+    const matchesPaymentStatus = !showUnpaidOnly || !member.paid;
+    return matchesSearch && matchesSubscription && matchesPaymentStatus;
   });
 
   return (
@@ -156,6 +159,11 @@ export default function PaiementPage() {
             onChange={setFilterSubscription}
             clearable
             style={{ minWidth: 200 }}
+          />
+          <Checkbox
+            label="Afficher uniquement les membres non payés"
+            checked={showUnpaidOnly}
+            onChange={(event) => setShowUnpaidOnly(event.currentTarget.checked)}
           />
         </Group>
         <Table

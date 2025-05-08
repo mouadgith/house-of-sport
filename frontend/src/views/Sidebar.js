@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faHome, 
@@ -7,17 +7,20 @@ import {
   faVest, 
   faChartBar, 
   faDumbbell, 
-  faLifeRing, 
+  faPeopleGroup, 
   faCog,
   faCreditCard,
   faRightFromBracket
 } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Sidebar.css';
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
   const location = useLocation();
   const [showNewFeatures, setShowNewFeatures] = useState(true);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: 'Home', icon: faHome, path: '/' },
@@ -25,7 +28,7 @@ const Sidebar = () => {
     { name: 'Coaches', icon: faVest, path: '/coaches' },
     { name: 'Paiement', icon: faCreditCard, path: '/payment' },
     { name: 'Equipment', icon: faDumbbell, path: '/equipment' },
-    { name: 'Support', icon: faLifeRing, path: '/support' },
+    { name: 'Groupe', icon: faPeopleGroup, path: '/coaches-groups' },
     { name: 'Settings', icon: faCog, path: '/settings' }
   ];
 
@@ -58,7 +61,10 @@ const Sidebar = () => {
           </div>
         </Link>
        <div className="logout">
-        <button className='btn-none'>
+        <button className='btn-none' onClick={() => {
+          logout();
+          navigate('/login');
+        }}>
         <FontAwesomeIcon icon={faRightFromBracket} className="rotate-180"/>
         </button>
        </div>
