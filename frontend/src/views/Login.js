@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import loginImage from '../images/login.png';
 import {
   Paper,
@@ -15,6 +15,7 @@ import {
 } from '@mantine/core';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const illustrationUrl = loginImage;
 
@@ -25,12 +26,26 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // You can add real authentication logic here
-    login();
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await axios.post('http://localhost:8000/api/login', {
+      email,
+      password
+    });
+
+    console.log('Login success:', response.data);
+    login(); 
     navigate('/');
-  };
+  } catch (error) {
+    console.error('Login failed:', error.response?.data || error.message);
+    alert('Email ou mot de passe invalide.');
+  }
+};
+
 
   return (
     <MantineProvider theme={{ primaryColor: 'orange' }}>
