@@ -6,6 +6,7 @@ import './App.css';
 import PrivateRoute from './views/PrivateRoute';
 import PageLoader from './components/Loader';
 import { lazyWithDelay } from './utils/lazyWithDelay';
+import DashboardPage from './views/Dashboard/DashboardPage';
 
 const MembersPage = lazyWithDelay(() => import('./views/Members'));
 const ProfilePage = lazyWithDelay(() => import('./views/Profile'));
@@ -24,13 +25,12 @@ function AppLayout() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<PrivateRoute><div>Home Page</div></PrivateRoute>} />
+            <Route path="/" element={<PrivateRoute><DashboardPage /></PrivateRoute>} />
             <Route path="/members" element={<PrivateRoute><MembersPage /></PrivateRoute>} />
             <Route path="/coaches" element={<PrivateRoute><CoachesPage /></PrivateRoute>} />
             <Route path="/coaches-groups" element={<PrivateRoute><CoachesGroups /></PrivateRoute>} />
             <Route path="/payment" element={<PrivateRoute><PaymentPage /></PrivateRoute>} />
             <Route path="/equipment" element={<PrivateRoute><EquipmentPage /></PrivateRoute>} />
-            <Route path="/settings" element={<PrivateRoute><div>Settings Page</div></PrivateRoute>} />
             <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
           </Routes>
         </Suspense>

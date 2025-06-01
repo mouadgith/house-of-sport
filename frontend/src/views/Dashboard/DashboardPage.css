@@ -1,0 +1,159 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Adjusted gap */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif; /* System font stack */
+    box-sizing: border-box; /* Include padding in height */
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 15px; /* Adjusted margin */
+    color: #333; /* Dark gray text */
+    font-weight: 600; /* Slightly bolder title */
+  }
+  
+  .dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Reverted min width slightly */
+    gap: 20px;
+  }
+  
+  .stat-card {
+    background-color: #fff;
+    padding: 20px; /* Adjusted padding */
+    border-radius: 8px; /* Consistent border radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Adjusted shadow for subtlety */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 110px; /* Adjusted height for stat cards */
+  }
+  
+  .stat-card h2 {
+    font-size: 14px; /* Adjusted title size */
+    color: #666; /* Medium gray text */
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  
+  .stat-card-number {
+    font-size: 28px; /* Adjusted number size */
+    font-weight: 700; /* Bold number */
+    color: #333; /* Dark gray text */
+    margin-top: 5px;
+    display: flex;
+    align-items: baseline; /* Align numbers and indicators at the baseline */
+    gap: 8px;
+  }
+  
+  .stat-indicator {
+      font-size: 12px; /* Adjusted indicator text size */
+      font-weight: 600;
+  }
+  
+  .stat-indicator.positive {
+      color: #28a745; /* Green for positive */
+  }
+  
+  .stat-indicator.negative {
+      color: #dc3545; /* Red for negative */
+  }
+  
+  .dashboard-middle-graph,
+  .dashboard-bottom-left-graph {
+    background-color: #fff;
+    padding: 20px; /* Adjusted padding */
+    border-radius: 8px; /* Consistent border radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Adjusted shadow for subtlety */
+    height: 300px; /* Adjusted height for graphs */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dashboard-middle-graph h2,
+  .dashboard-bottom-left-graph h2 {
+      font-size: 18px;
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 10px; /* Adjusted margin below title */
+      font-weight: 600;
+  }
+  
+  .dashboard-middle-graph .chart-container,
+  .dashboard-bottom-left-graph .chart-container {
+      flex-grow: 1;
+      position: relative;
+  }
+  
+  /* Styling for Chart.js containers to remove default borders and backgrounds */
+  .dashboard-middle-graph canvas,
+  .dashboard-bottom-left-graph canvas {
+      background-color: transparent;
+  }
+  
+  .dashboard-clock-area {
+    /* background-image: url('your-clock-image-url-or-path.jpg'); Removed background image from CSS */
+    background-size: cover;
+    background-position: center;
+    position: relative; /* Needed for the overlay */
+    background-color: #ff9800; /* Orange background color as fallback */
+    padding: 20px; /* Adjusted padding */
+    border-radius: 8px; /* Consistent border radius */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Adjusted shadow for subtlety */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* color: #ffffff; Removed default text color here, will set on time display */
+    font-size: 2em; /* Adjusted font size */
+    font-weight: bold;
+    height: 110px; /* Match height of stat cards */
+    box-sizing: border-box;
+    text-align: center; /* Center the time text */
+    overflow: hidden; /* Hide overflowing content */
+    height: 100%;
+  }
+  
+  .dashboard-clock-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent dark overlay */
+    z-index: 1; /* Place overlay above the background image */
+  }
+  
+  .dashboard-clock-area h2 {
+    color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for title */
+    margin-bottom: 5px; /* Adjusted margin */
+    font-size: 14px; /* Match stat card title size */
+    font-weight: 500;
+    position: relative; /* Ensure title is above the overlay */
+    z-index: 2;
+  }
+  
+  .dashboard-bottom-section {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* Adjusted ratio for wider left graph */
+    gap: 20px;
+  }
+  
+  span.stat-card-icon {
+    color: var(--bs-orange);
+    padding: .5rem;
+    font-size: 1rem;
+  }
+  
+  .clock-time-display {
+    position: relative; /* Needed to position above overlay */
+    z-index: 2; /* Ensure time is above the overlay */
+    color: #ffffff; /* White text color for the time */
+    font-size: 1.5em; /* Adjust font size as needed */
+    font-weight: bold;
+  }

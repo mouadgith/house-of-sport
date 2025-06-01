@@ -23,20 +23,19 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { name: 'Home', icon: faHome, path: '/' },
-    { name: 'Members', icon: faUsers, path: '/members' },
-    { name: 'Coaches', icon: faVest, path: '/coaches' },
+    { name: 'Accueil', icon: faHome, path: '/' },
+    { name: 'Membres', icon: faUsers, path: '/members' },
+    { name: 'Coachs', icon: faVest, path: '/coaches' },
     { name: 'Paiement', icon: faCreditCard, path: '/payment' },
-    { name: 'Equipment', icon: faDumbbell, path: '/equipment' },
-    { name: 'Groupe', icon: faPeopleGroup, path: '/coaches-groups' },
-    { name: 'Settings', icon: faCog, path: '/settings' }
+    { name: 'Équipement', icon: faDumbbell, path: '/equipment' },
+    { name: 'Groupes', icon: faPeopleGroup, path: '/coaches-groups' },
   ];
 
   return (
     <div className="sidebar">
       <div className="d-flex justify-content-around p-2 sidebar-header">    
         <FontAwesomeIcon icon={faDumbbell} className="fa-2x gym-icon" />
-        <h4 className="align-self-center h5 m-0">House of Sport</h4>
+        <h4 className="align-self-center h5 m-0">Maison du Sport</h4>
       </div>
       <nav className="sidebar-nav">
         <ul>
