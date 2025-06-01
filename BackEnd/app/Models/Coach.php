@@ -9,11 +9,19 @@ class Coach extends Model
 {
     use HasFactory;
 
+    protected $table = 'coachs';
+
     protected $fillable = [
         'nom',
         'prenom',
-        'telephone',
-        'email'
+        'tel',
+        'adresse',
+        'sexe',
+        'date_naissance'
+    ];
+
+    protected $casts = [
+        'date_naissance' => 'date'
     ];
 
     public function seances()

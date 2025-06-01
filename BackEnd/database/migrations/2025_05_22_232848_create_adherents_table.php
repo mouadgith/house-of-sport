@@ -13,10 +13,13 @@ return new class extends Migration
             $table->id();
             $table->string('nom', 50);
             $table->string('prenom', 50);
-            $table->date('date_naissance')->nullable();
-            $table->enum('sexe', ['M', 'F'])->nullable();
-            $table->string('telephone', 20)->nullable();
-            $table->decimal('poids', 5, 2)->nullable();
+            $table->string('email')->unique();
+            $table->string('telephone', 20)->default('');
+            $table->text('adresse')->default('');
+            $table->decimal('poids', 5, 2)->default(0);
+            $table->text('condition_medicale')->default('sans');
+            $table->enum('sexe', ['M', 'F'])->default('M');
+            $table->date('date_naissance')->default(DB::raw('CURRENT_DATE'));
             $table->date('date_inscription')->default(DB::raw('CURRENT_DATE'));
             $table->timestamps();
         });
