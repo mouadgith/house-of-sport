@@ -22,9 +22,8 @@ class AdherentController extends Controller
             'telephone' => 'nullable|string|max:20',
             'poids' => 'nullable|numeric',
         ]);
-
+        
         $adherent = Adherent::create($validated);
-
         return response()->json($adherent, 201);
     }
 
