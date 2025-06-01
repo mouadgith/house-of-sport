@@ -30,9 +30,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 use App\Http\Controllers\AdherentController;
 
-Route::apiResource('adherents', AdherentController::class);
-Route::get('adherents/{adherent}/abonnements', [AdherentController::class, 'abonnements']);
-Route::get('adherents/{adherent}/seances', [AdherentController::class, 'seances']);
+Route::prefix('adherents')->group(function () {
+    Route::get('/', [AdherentController::class, 'index']);
+    Route::get('/search', [AdherentController::class, 'search']);
+    Route::get('/{id}', [AdherentController::class, 'show']);
+    Route::post('/', [AdherentController::class, 'store']);
+    Route::put('/{id}', [AdherentController::class, 'update']);
+    Route::delete('/{id}', [AdherentController::class, 'destroy']);
+    Route::get('/{adherent}/abonnements', [AdherentController::class, 'abonnements']);
+    Route::get('/{adherent}/seances', [AdherentController::class, 'seances']);
+});
 
 use App\Http\Controllers\CoachController;
 Route::apiResource('coachs', CoachController::class);

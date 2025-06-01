@@ -9,19 +9,25 @@ class Adherent extends Model
 {
     use HasFactory;
 
+    protected $table = 'adherents';
+
     protected $fillable = [
         'nom',
         'prenom',
-        'date_naissance',
-        'sexe',
+        'email',
         'telephone',
+        'adresse',
         'poids',
+        'condition_medicale',
+        'sexe',
+        'date_naissance',
         'date_inscription'
     ];
 
     protected $casts = [
         'date_naissance' => 'date',
         'date_inscription' => 'date',
+        'poids' => 'decimal:2'
     ];
 
     public function abonnements()

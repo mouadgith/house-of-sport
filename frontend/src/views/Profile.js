@@ -136,10 +136,10 @@ const ProfilePage = () => {
 
           <TextInput
             label="Numéro de téléphone"
-            value={profile.numTel}
+            value={profile.telephone}
             disabled={!isEditing}
             icon={<IconPhone size={rem(14)} />}
-            onChange={(e) => setProfile({ ...profile, numTel: e.target.value })}
+            onChange={(e) => setProfile({ ...profile, telephone: e.target.value })}
           />
 
           <TextInput

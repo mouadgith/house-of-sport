@@ -22,12 +22,12 @@ const fakeData = [
     nom: 'John',
     prenom: 'Doe',
     email: 'john@example.com',
-    numTel: '+212345678902',
+    telephone: '+212345678902',
     adresse: '123 Main St',
     poids: '75',
-    conditionMedicale: 'None',
+    condition_medicale: 'None',
     sexe: 'M',
-    dateNaissance: '1990-01-01',
+    date_naissance: '1990-01-01',
   },
   // Add more sample data as needed
 ];
@@ -155,14 +155,14 @@ const Members = () => {
         },
       },
       {
-        accessorKey: 'numTel',
+        accessorKey: 'telephone',
         header: 'Numéro de téléphone',
         mantineEditTextInputProps: {
           type: 'tel',
           required: true,
-          error: validationErrors?.numTel,
+          error: validationErrors?.telephone,
           placeholder: '+212XXXXXXXXX',
-          onFocus: () => setValidationErrors({ ...validationErrors, numTel: undefined }),
+          onFocus: () => setValidationErrors({ ...validationErrors, telephone: undefined }),
         },
       },
       {
@@ -183,11 +183,11 @@ const Members = () => {
         },
       },
       {
-        accessorKey: 'conditionMedicale',
+        accessorKey: 'condition_medicale',
         header: 'Condition médicale',
         mantineEditTextInputProps: {
-          error: validationErrors?.conditionMedicale,
-          onFocus: () => setValidationErrors({ ...validationErrors, conditionMedicale: undefined }),
+          error: validationErrors?.condition_medicale,
+          onFocus: () => setValidationErrors({ ...validationErrors, condition_medicale: undefined }),
         },
       },
       {
@@ -204,12 +204,22 @@ const Members = () => {
         },
       },
       {
-        accessorKey: 'dateNaissance',
+        accessorKey: 'date_naissance',
         header: 'Date de naissance',
         mantineEditTextInputProps: {
           type: 'date',
-          error: validationErrors?.dateNaissance,
-          onFocus: () => setValidationErrors({ ...validationErrors, dateNaissance: undefined }),
+          error: validationErrors?.date_naissance,
+          onFocus: () => setValidationErrors({ ...validationErrors, date_naissance: undefined }),
+        },
+        Cell: ({ cell }) => {
+          const date = new Date(cell.getValue());
+          if (isNaN(date)) {
+            return cell.getValue();
+          }
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
         },
       },
     ],
@@ -231,7 +241,7 @@ const Members = () => {
       : undefined,
     mantineTableContainerProps: {
       sx: {
-        minHeight: '75vh',
+        maxHeight: '80vh',
       },
     },
     onCreatingRowCancel: () => setValidationErrors({}),
@@ -306,8 +316,8 @@ function validateMember(member) {
     errors.email = 'Format d\'email incorrect';
   }
   
-  if (!validatePhoneNumber(member.numTel)) {
-    errors.numTel = 'Le numéro doit commencer par +212 suivi de 9 chiffres';
+  if (!validatePhoneNumber(member.telephone)) {
+    errors.telephone = 'Le numéro doit commencer par +212 suivi de 9 chiffres';
   }
   
   return errors;
@@ -319,8 +329,17 @@ function useCreateMember() {
   return useMutation({
     mutationFn: async (member) => {
       // Implement your API call here
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return Promise.resolve();
+      const response = await fetch('http://localhost:8000/api/adherents', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(member),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to create member');
+      }
+      return response.json(); // Assuming the API returns the newly created member data
     },
     onMutate: (newMemberInfo) => {
       queryClient.setQueryData(['members'], (oldData = []) => {
@@ -331,6 +350,9 @@ function useCreateMember() {
         return [...oldData, newMember];
       });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['members'] });
+    },
   });
 }
 
@@ -339,11 +361,14 @@ function useGetMembers() {
   return useQuery({
     queryKey: ['members'],
     queryFn: async () => {
-      // Implement your API call here
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return Promise.resolve(fakeData);
+      const response = await fetch('http://localhost:8000/api/adherents'); // Use the provided API endpoint
+      if (!response.ok) {
+        throw new Error('Failed to fetch members');
+      }
+      const data = await response.json();
+      // Assuming the API returns an array of member objects that match the column structure
+      return data;
     },
-    refetchOnWindowFocus: false,
   });
 }
 
@@ -353,8 +378,25 @@ function useUpdateMembers() {
   return useMutation({
     mutationFn: async (updatedMember) => {
       // Implement your API call here
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return Promise.resolve();
+      // Transform the member data to match backend expectations
+      const memberDataForBackend = {
+        ...updatedMember,
+        telephone: updatedMember.telephone,
+      };
+      // Remove the original telephone field if necessary (optional, but cleaner)
+      delete memberDataForBackend.telephone;
+
+       const response = await fetch(`http://localhost:8000/api/adherents/${updatedMember.id}`, {
+         method: 'PUT',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(memberDataForBackend), // Send the transformed data
+       });
+       if (!response.ok) {
+         throw new Error('Failed to update member');
+       }
+       return response.json(); // Assuming the API returns the updated member data
     },
     onMutate: (updatedMember) => {
       queryClient.setQueryData(['members'], (oldData = []) => {
@@ -362,6 +404,9 @@ function useUpdateMembers() {
           member.id === updatedMember.id ? updatedMember : member
         );
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['members'] });
     },
   });
 }
@@ -372,13 +417,21 @@ function useDeleteMember() {
   return useMutation({
     mutationFn: async (memberId) => {
       // Implement your API call here
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return Promise.resolve();
+      const response = await fetch(`http://localhost:8000/api/adherents/${memberId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete member');
+      }
+      return true; // Indicate success
     },
     onMutate: (memberId) => {
       queryClient.setQueryData(['members'], (oldData = []) => {
         return oldData.filter((member) => member.id !== memberId);
       });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['members'] });
     },
   });
 }
